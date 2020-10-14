@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+  <button onclick="getLocation()">Try It</button>
+
+  <p class="map-info"></p>
+
+  <script>
+    var mapinfo = document.querySelector('.map-info');
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        mapinfo.textContent = "抓取資料失敗，請確認有開啟定位";
+      }
+    }
+
+    function showPosition(position) {
+      mapinfo.textContent = `經緯度：${position.coords.latitude},${position.coords.longitude}`;
+    }
+  </script>
+</body>
+</html>
