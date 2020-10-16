@@ -13,17 +13,20 @@
       <h2 class="mb-3">NET QR code 登入系統</h2>
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">帳號</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="qrCodeAccount">帳號</label>
+          <input type="text" class="form-control" id="qrCodeAccount">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">密碼</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label for="qrCodePassword">密碼</label>
+          <input type="password" class="form-control" id="qrCodePassword">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary" id="qrLogin">登入</button>
       </form>
     </div>
-    
+
   </div>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+  <script src="js/all.js"></script>
 </body>
 </html>
