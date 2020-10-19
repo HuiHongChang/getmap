@@ -141,7 +141,6 @@ $(document).ready(function () {
         alert('登入失敗');
       }
     });
-
   }
 
   $('#qrLogin').click(login);
