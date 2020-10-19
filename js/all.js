@@ -49,14 +49,18 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 $(document).ready(function () {
-   
+  const page = {
+    home: 'https://huihongchang.github.io/getmap/',
+    index: 'https://huihongchang.github.io/getmap/index.html',
+    checkout: 'https://huihongchang.github.io/checkout.html'
+  }
   // 判斷如果進到打卡頁面時，是否登入
   (function () {
     let gobalIsLogin = sessionStorage.getItem('isLogin');
-    let isOnIndex = location.href === 'http://127.0.0.1:5500/index.html';
+    let isOnIndex = location.href === page.checkout;
     if (isOnIndex && !gobalIsLogin) {
       alert('請先登入');
-      $(window).attr('location', '//127.0.0.1:5500/login.html');
+      $(window).attr('location', page.index);
     }
   })();
   
@@ -131,13 +135,12 @@ $(document).ready(function () {
       if (isLogin) {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入成功');
-        $(window).attr('location', '//127.0.0.1:5500/index.html');
+        $(window).attr('location', page.index);
       } else {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入失敗');
       }
     });
-
   }
 
   $('#qrLogin').click(login);
