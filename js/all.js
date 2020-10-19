@@ -4,19 +4,72 @@
 // });
 
 // const { post } = require("jquery");
+let mapinfo = document.querySelector('.map-info');
+let latA, lonA, latB = "25.042574", lonB = "121.550855";
 
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    mapinfo.textContent = "抓取資料失敗，請確認有開啟定位";
+  }
+}
+
+function showPosition(position) {
+  latA = position.coords.latitude;
+  lonA = position.coords.longitude;
+  mapinfo.textContent = `經緯度：${latA},${lonA}`;
+  console.log(distance(latA, lonA, latB, lonB, "K"));
+}
+
+// function getDistance(x1, y1, x2, y2){
+//   let distance = Math.sqrt(Math.abs(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
+//   console.log(distance);
+// }
+
+function distance(lat1, lon1, lat2, lon2, unit) {
+  if ((lat1 == lat2) && (lon1 == lon2)) {
+    return 0;
+  }
+  else {
+    var radlat1 = Math.PI * lat1 / 180;
+    var radlat2 = Math.PI * lat2 / 180;
+    var theta = lon1 - lon2;
+    var radtheta = Math.PI * theta / 180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = dist * 180 / Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit == "K") { dist = dist * 1.609344 }
+    if (unit == "N") { dist = dist * 0.8684 }
+    return dist;
+  }
+}
 $(document).ready(function () {
+   
+  // 判斷如果進到打卡頁面時，是否登入
+  (function () {
+    let gobalIsLogin = sessionStorage.getItem('isLogin');
+    let isOnIndex = location.href === 'http://127.0.0.1:5500/index.html';
+    if (isOnIndex && !gobalIsLogin) {
+      alert('請先登入');
+      $(window).attr('location', '//127.0.0.1:5500/login.html');
+    }
+  })();
   
   // Changes XML to JSON
   function xmlToJson(xml) {
-    
+
     // Create the return object
     var obj = {};
 
     if (xml.nodeType == 1) { // element
       // do attributes
       if (xml.attributes.length > 0) {
-      obj["@attributes"] = {};
+        obj["@attributes"] = {};
         for (var j = 0; j < xml.attributes.length; j++) {
           var attribute = xml.attributes.item(j);
           obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
@@ -28,13 +81,13 @@ $(document).ready(function () {
 
     // do children
     if (xml.hasChildNodes()) {
-      for(var i = 0; i < xml.childNodes.length; i++) {
+      for (var i = 0; i < xml.childNodes.length; i++) {
         var item = xml.childNodes.item(i);
         var nodeName = item.nodeName;
-        if (typeof(obj[nodeName]) == "undefined") {
+        if (typeof (obj[nodeName]) == "undefined") {
           obj[nodeName] = xmlToJson(item);
         } else {
-          if (typeof(obj[nodeName].push) == "undefined") {
+          if (typeof (obj[nodeName].push) == "undefined") {
             var old = obj[nodeName];
             obj[nodeName] = [];
             obj[nodeName].push(old);
@@ -75,17 +128,18 @@ $(document).ready(function () {
     $.ajax(settings).done(function (response) {
       let xmlData = xmlToJson(response);
       let isLogin = (xmlData['soap:Envelope']['soap:Body'].uCheckEmployeeResponse.uCheckEmployeeResult['#text'] === 'true');
-      if (isLogin){
+      if (isLogin) {
+        sessionStorage.setItem('isLogin', isLogin);
         alert('登入成功');
-        $(window).attr('location','//127.0.0.1:5500/index.html');
+        $(window).attr('location', '//127.0.0.1:5500/index.html');
       } else {
+        sessionStorage.setItem('isLogin', isLogin);
         alert('登入失敗');
       }
     });
 
   }
-  
+
   $('#qrLogin').click(login);
-  
 
 });
