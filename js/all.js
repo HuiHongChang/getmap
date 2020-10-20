@@ -112,7 +112,7 @@ $(document).ready(function () {
       sPw: $('#qrCodePassword').val() || '',
     }
     let settings = {
-      "url": "http://59.124.246.10:9999/Service1.asmx?op=uCheckEmployee",
+      "url": "http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee",
       "method": "POST",
       "dataType": "xml",
       "timeout": 0,
