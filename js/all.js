@@ -7,17 +7,17 @@ $(document).ready(function () {
     url: 'http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee',
   }
   // test url
-  // const page = {
-  //   home: 'http://127.0.0.1:5500',
-  //   index: 'http://127.0.0.1:5500/index.html',
-  //   checkout: 'http://127.0.0.1:5500/checkout.html',
-  // };
-  // 正式 url
   const page = {
-    home: 'http://59.124.246.9:7777',
-    index: 'http://59.124.246.9:7777/index.html',
-    checkout: 'http://59.124.246.9:7777/checkout.html',
+    home: 'http://127.0.0.1:5500',
+    index: 'http://127.0.0.1:5500/index.html',
+    checkout: 'http://127.0.0.1:5500/checkout.html',
   };
+  // 正式 url
+  // const page = {
+  //   home: 'http://59.124.246.9:7777',
+  //   index: 'http://59.124.246.9:7777/index.html',
+  //   checkout: 'http://59.124.246.9:7777/checkout.html',
+  // };
 
   // 判斷如果進到打卡頁面時，是否登入
   (function () {
@@ -122,14 +122,15 @@ $(document).ready(function () {
   const mapinfo = document.querySelector('.map-info');
   let latA, lonA, latB = "25.042574", lonB = "121.550855";
 
-  $('#btn-getlocation').click(function(e) {
-    e.preventDefault();
+  $('#btn-getlocation').click(getLocation);  
+
+  function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
       mapinfo.textContent = "抓取資料失敗，請確認有開啟定位";
     }
-  });  
+  }
 
   // 取得當前裝置座標
   function showPosition(position) {
