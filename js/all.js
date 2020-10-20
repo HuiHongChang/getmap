@@ -138,7 +138,7 @@ $(document).ready(function () {
       if (isLogin) {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入成功');
-        $(window).attr('location', page.index);
+        $(window).attr('location', page.checkout);
       } else {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入失敗');
