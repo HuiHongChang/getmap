@@ -53,9 +53,9 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 $(document).ready(function () {
   const page = {
-    home: 'https://huihongchang.github.io/getmap/',
-    index: 'https://huihongchang.github.io/getmap/index.html',
-    checkout: 'https://huihongchang.github.io/checkout.html'
+    home: 'http://59.124.246.9:7777',
+    index: 'http://59.124.246.9:7777/index.html',
+    checkout: 'http://59.124.246.9:7777/checkout.html'
   };
   // 判斷如果進到打卡頁面時，是否登入
   (function () {
