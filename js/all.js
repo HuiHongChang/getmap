@@ -52,15 +52,30 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 $(document).ready(function () {
+  const loginApi = {
+    url: 'http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee',
+  }
+  // test url
+  // const page = {
+  //   home: 'http://127.0.0.1:5500',
+  //   index: 'http://127.0.0.1:5500/index.html',
+  //   checkout: 'http://127.0.0.1:5500/checkout.html',
+  // };
+  // 正式 url
   const page = {
     home: 'http://59.124.246.9:7777',
     index: 'http://59.124.246.9:7777/index.html',
-    checkout: 'http://59.124.246.9:7777/checkout.html'
+    checkout: 'http://59.124.246.9:7777/checkout.html',
   };
+
   // 判斷如果進到打卡頁面時，是否登入
   (function () {
+    let NowURL = new URL(window.location.href);
+    let nowPage = NowURL.href.replace(NowURL.search,'');
+
     let gobalIsLogin = sessionStorage.getItem('isLogin');
-    let isOnIndex = location.href === page.checkout;
+    let isOnIndex = nowPage === page.checkout;
+
     if (isOnIndex && !gobalIsLogin) {
       alert('請先登入');
       $(window).attr('location', page.index);
@@ -69,10 +84,8 @@ $(document).ready(function () {
   
   // Changes XML to JSON
   function xmlToJson(xml) {
-
     // Create the return object
     var obj = {};
-
     if (xml.nodeType == 1) { // element
       // do attributes
       if (xml.attributes.length > 0) {
@@ -112,14 +125,13 @@ $(document).ready(function () {
       sPw: $('#qrCodePassword').val() || '',
     }
     let settings = {
-      "url": "http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee",
+      "url": loginApi.url,
       "method": "POST",
       "dataType": "xml",
       "timeout": 0,
       "headers": {
         "Content-Type": "text/xml;charset='UTF-8'",
       },
-      // "data": `<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Body>\r\n    <uCheckEmployee xmlns=\"http://tempuri.org/\">\r\n      <sId>${account.sId}</sId>\r\n      <sPw>${account.sPw}</sPw>\r\n    </uCheckEmployee>\r\n  </soap:Body>\r\n</soap:Envelope>`,
       "data": `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
@@ -135,6 +147,7 @@ $(document).ready(function () {
     $.ajax(settings).done(function (response) {
       let xmlData = xmlToJson(response);
       let isLogin = (xmlData['soap:Envelope']['soap:Body'].uCheckEmployeeResponse.uCheckEmployeeResult['#text'] === 'true');
+      
       if (isLogin) {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入成功');
