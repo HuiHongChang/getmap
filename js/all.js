@@ -6,12 +6,20 @@ $(document).ready(function () {
   const loginApi = {
     url: 'http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee',
   }
-  // test url
+  
+  //github url
   const page = {
-    home: 'http://127.0.0.1:5500',
-    index: 'http://127.0.0.1:5500/index.html',
-    checkout: 'http://127.0.0.1:5500/checkout.html',
+    home: 'https://huihongchang.github.io/getmap',
+    index: 'https://huihongchang.github.io/getmap/index.html',
+    checkout: 'https://huihongchang.github.io/getmap/checkout.html',
   };
+
+  // test url
+  // const page = {
+  //   home: 'http://127.0.0.1:5500',
+  //   index: 'http://127.0.0.1:5500/index.html',
+  //   checkout: 'http://127.0.0.1:5500/checkout.html',
+  // };
   // 正式 url
   // const page = {
   //   home: 'http://59.124.246.9:7777',
