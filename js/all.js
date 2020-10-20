@@ -53,9 +53,9 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 $(document).ready(function () {
   const page = {
-    home: 'https://huihongchang.github.io/getmap/',
-    index: 'https://huihongchang.github.io/getmap/index.html',
-    checkout: 'https://huihongchang.github.io/checkout.html'
+    home: 'http://59.124.246.9:7777',
+    index: 'http://59.124.246.9:7777/index.html',
+    checkout: 'http://59.124.246.9:7777/checkout.html'
   };
   // 判斷如果進到打卡頁面時，是否登入
   (function () {
@@ -112,7 +112,7 @@ $(document).ready(function () {
       sPw: $('#qrCodePassword').val() || '',
     }
     let settings = {
-      "url": "http://59.124.246.10:9999/Service1.asmx?op=uCheckEmployee",
+      "url": "http://192.168.1.2:9999/Service1.asmx?op=uCheckEmployee",
       "method": "POST",
       "dataType": "xml",
       "timeout": 0,
@@ -138,7 +138,7 @@ $(document).ready(function () {
       if (isLogin) {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入成功');
-        $(window).attr('location', page.index);
+        $(window).attr('location', page.checkout);
       } else {
         sessionStorage.setItem('isLogin', isLogin);
         alert('登入失敗');
