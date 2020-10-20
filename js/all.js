@@ -22,13 +22,9 @@ $(document).ready(function () {
     index: 'http://59.124.246.9:7777/index.html',
   };
 
-  let linkStr = location.href;
+  let linkStr = location.href.split("?")[1];
+  
   console.log(linkStr);
-
-  // 改寫自 MDN 範例
-  // navigator.geolocation.getCurrentPosition(function(position) {
-  //     console.log(position.coords.latitude, position.coords.longitude);
-  // });
 
   // const { post } = require("jquery");
   const mapinfo = document.querySelector('.map-info');
