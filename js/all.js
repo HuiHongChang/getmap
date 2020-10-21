@@ -4,6 +4,28 @@
 
 $(document).ready(function () {
 
+  const storeData = [
+    {
+      id:"A02L",
+      location: {lat : "25.042574", lon: "121.550855"}
+    },
+    {
+      id:"A03B",
+      location: {lat : "23.042574", lon: "123.550855"}
+    },
+    {
+      id:"A03K",
+      location: {lat : "24.042574", lon: "122.550855"}
+    }
+  ]
+
+  let linkData = {
+    latA: "",
+    lonA: "",
+    latB: "",
+    lonB: ""
+  };
+
   //github url
   // const page = {
   //   home: 'https://huihongchang.github.io/getmap',
@@ -17,41 +39,60 @@ $(document).ready(function () {
   //   index: 'http://127.0.0.1:5500/index.html',
   //   checkout: 'http://127.0.0.1:5500/checkout.html',
   // };
+
   // 正式 url
   const page = {
     index: 'http://59.124.246.9:7777/index.html',
   };
 
-  let linkStr = location.href.split("?")[1];
-  
-  console.log(linkStr);
+  //取得網址連結
+  function GetPageLink(){
+    let linkStr = location.href.split("?")[1];
+    console.log(linkStr);
+    
+    return linkStr;
+  } 
 
-  // const { post } = require("jquery");
+  //取得店代號
+  function GetStoreId(linkStr){
+    let storeId = linkStr.split("store=")[1];
+    console.log(storeId);
+    
+    return storeId;
+  }
+
+  GetStoreLocation(GetStoreId(GetPageLink()));
+
+  //取的店座標
+  function GetStoreLocation(storeId){
+    for(let i = 0; i < storeData.length; i++){
+      if(storeData[i]["id"] === storeId){
+        linkData.latB = storeData[i]["location"].lat;
+        linkData.lonB = storeData[i]["location"].lon;
+      }       
+    }  
+    console.log(linkData);
+  }
+
   const mapinfo = document.querySelector('.map-info');
-  let latA, lonA, latB = "25.042574", lonB = "121.550855";
 
   $('#btn-getlocation').click(getLocation);  
 
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
+      navigator.geolocation.getCurrentPosition(GetPosition);
     } else {
       mapinfo.textContent = "抓取資料失敗，請確認有開啟定位";
     }
   }
 
   // 取得當前裝置座標
-  function showPosition(position) {
-    latA = position.coords.latitude;
-    lonA = position.coords.longitude;
-    mapinfo.textContent = `經緯度：${latA},${lonA}`;
-    console.log(distance(latA, lonA, latB, lonB, "K"));
+  function GetPosition(position) {
+    linkData.latA = position.coords.latitude;
+    linkData.lonA = position.coords.longitude;
+    mapinfo.textContent = `經緯度：${linkData.latA},${linkData.lonA}`;
+    console.log(distance(linkData.latA, linkData.lonA, linkData.latB, linkData.lonB, "K"));
   }
-
-  // function getDistance(x1, y1, x2, y2){
-  //   let distance = Math.sqrt(Math.abs(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
-  //   console.log(distance);
-  // }
 
   /*計算兩個座標的距離*/
   function distance(lat1, lon1, lat2, lon2, unit) {
