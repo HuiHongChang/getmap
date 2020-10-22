@@ -31,9 +31,7 @@
 
   let storeAddress = "247新北市蘆洲區長榮路3號";
   let mapAPIKey = "AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8";
-
-  var xhr = new XMLHttpRequest();
-  // xhr.withCredentials = false;
+  const mapinfo = document.querySelector('.map-info');
   
   // 正式 url
   let page = {
@@ -50,23 +48,30 @@
  
   //取的店座標
   function GetStorePos(){
+    var xhr = new XMLHttpRequest();
+    // xhr.withCredentials = false;
     xhr.addEventListener("readystatechange", function() {
       if(this.readyState === 4) {
-        let mapData = JSON.parse(this.responseText);
-        console.log(mapData);
-        console.log(mapData["results"][0].geometry.location.lat);
-        linkData.latB = mapData["results"][0].geometry.location.lat;
-        linkData.lonB = mapData["results"][0].geometry.location.lng;
-        getLocation();
+        if(this.status === 200){
+          let mapData = JSON.parse(this.responseText);
+          console.log(mapData);
+          console.log(mapData["results"][0].geometry.location.lat);
+          linkData.latB = mapData["results"][0].geometry.location.lat;
+          linkData.lonB = mapData["results"][0].geometry.location.lng;
+          getLocation();
+        }
+        else{
+          mapinfo.textContent = "請求失敗，請重新使用QRCODE進入!!!";
+          MixPageLink()
+        }
       }   
+      
     });
     
     xhr.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=${storeAddress}&key=${mapAPIKey}`);
     
     xhr.send();
   }
-  
-  const mapinfo = document.querySelector('.map-info');
 
   // $('#btn-getlocation').click(getLocation);  
 
@@ -82,7 +87,7 @@
   function GetPosition(position) {
     linkData.latA = position.coords.latitude;
     linkData.lonA = position.coords.longitude;
-    mapinfo.textContent = `經緯度：${linkData.latA},${linkData.lonA}`;
+    mapinfo.textContent = `資訊取得成功`;
     distance(linkData.latA, linkData.lonA, linkData.latB, linkData.lonB, "K");
     console.log(linkData);
   }
