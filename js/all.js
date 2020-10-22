@@ -34,16 +34,18 @@
     memberid: ""
   };
 
-  let data = null;
-  let xhr = new XMLHttpRequest();
-  xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4 && this.state == 200) {
-          console.log(this.responseText);
-      }
-  });
-  xhr.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=247新北市蘆洲區長榮路3號&key=AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8&callback=initMap");
-  xhr.setRequestHeader("cache-control", "no-cache");
-  xhr.send(data); //GET方法的時候，send傳送null
+  var formdata = new FormData();
+
+var requestOptions = {
+  method: 'GET',
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("https://maps.googleapis.com/maps/api/geocode/json?address=247新北市蘆洲區長榮路3號&key=AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8&callback=initMap", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 
   
   // 正式 url
