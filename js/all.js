@@ -23,7 +23,14 @@
     latB: "",
     lonB: "",
     distance: "",
-    EncryptStr: "",
+    id: "",
+    memberid: "",
+    store: ""
+  };
+
+  let localUrlData = {
+    id: "",
+    store: "",
     memberid: ""
   };
 
@@ -46,23 +53,21 @@
     link: 'http://59.124.246.9:7777/index.html',
   };
 
-  //取得網址連結參數
-  function GetPageLink(){
-    let linkStr = location.href.split("?")[1];
-    console.log(linkStr);
-    linkData.EncryptStr = linkStr.split("id=")[1].split("&")[0];
-    return linkStr;
-  } 
-
-  //取得店代號
-  function GetStoreId(linkStr){
-    let storeId = linkStr.split("store=")[1].split("&")[0];
-    console.log(storeId);
-    return storeId;
+  let pageurl = new URL(location.href);
+  let params = pageurl.searchParams;
+  for (let pair of params.entries()) {
+    linkData[pair[0]] = pair[1];
   }
 
+  
+  getLocation();
+  // GetStoreLocation(GetStoreId(GetPageLink()));
+  // GetMemberId(GetPageLink());
+
+  GetStorePos(linkData.store);
+ 
   //取的店座標
-  function GetStoreLocation(storeId){
+  function GetStorePos(storeId){
     for(let i = 0; i < storeData.length; i++){
       if(storeData[i]["id"] === storeId){
         linkData.latB = storeData[i]["location"].lat;
@@ -70,17 +75,6 @@
       }       
     }  
   }
-
-  //取得會員ID
-  function GetMemberId(linkStr){
-    let memberId = linkStr.split("memberid=")[1].split("&")[0];
-    linkData.memberid = memberId;
-  }
-
-  getLocation();
-  GetStoreLocation(GetStoreId(GetPageLink()));
-  GetMemberId(GetPageLink());
-
   
   const mapinfo = document.querySelector('.map-info');
 
@@ -99,21 +93,22 @@
     linkData.latA = position.coords.latitude;
     linkData.lonA = position.coords.longitude;
     mapinfo.textContent = `經緯度：${linkData.latA},${linkData.lonA}`;
-    console.log(distance(linkData.latA, linkData.lonA, linkData.latB, linkData.lonB, "K"));
+    distance(linkData.latA, linkData.lonA, linkData.latB, linkData.lonB, "K");
     console.log(linkData);
   }
 
   /*計算兩個座標的距離*/
   function distance(lat1, lon1, lat2, lon2, unit) {
+    let dist
     if ((lat1 == lat2) && (lon1 == lon2)) {
-      return 0;
+      dist = 0;
     }
     else {
       var radlat1 = Math.PI * lat1 / 180;
       var radlat2 = Math.PI * lat2 / 180;
       var theta = lon1 - lon2;
       var radtheta = Math.PI * theta / 180;
-      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
       if (dist > 1) {
         dist = 1;
       }
@@ -121,17 +116,15 @@
       dist = dist * 180 / Math.PI;
       dist = dist * 60 * 1.1515;
       if (unit == "K") { dist = dist * 1.609344 }
-      if (unit == "N") { dist = dist * 0.8684 }
-
-      linkData.distance = dist; 
-      MixPageLink();     
-      return dist;
+      if (unit == "N") { dist = dist * 0.8684 }           
     }
+    linkData.distance = dist;
+    MixPageLink();
   }
   
   function MixPageLink(){
     console.log(linkData);
-    page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.EncryptStr}`;
+    page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
     console.log(page.link);  
     window.location.assign(page.link);
   }
