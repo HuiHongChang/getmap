@@ -34,20 +34,18 @@
     memberid: ""
   };
 
-  //github url
-  // const page = {
-  //   home: 'https://huihongchang.github.io/getmap',
-  //   index: 'https://huihongchang.github.io/getmap/index.html',
-  //   checkout: 'https://huihongchang.github.io/getmap/checkout.html',
-  // };
+  let data = null;
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4 && this.state == 200) {
+          console.log(this.responseText);
+      }
+  });
+  xhr.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=247新北市蘆洲區長榮路3號&key=AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8&callback=initMap");
+  xhr.setRequestHeader("cache-control", "no-cache");
+  xhr.send(data); //GET方法的時候，send傳送null
 
-  // test url
-  // const page = {
-  //   home: 'http://127.0.0.1:5500',
-  //   index: 'http://127.0.0.1:5500/index.html',
-  //   checkout: 'http://127.0.0.1:5500/checkout.html',
-  // };
-
+  
   // 正式 url
   let page = {
     link: 'http://59.124.246.9:7777/index.html',
@@ -126,6 +124,6 @@
     console.log(linkData);
     page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
     console.log(page.link);  
-    window.location.assign(page.link);
+    // window.location.assign(page.link);
   }
 
