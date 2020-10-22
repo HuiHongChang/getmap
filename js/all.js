@@ -1,5 +1,6 @@
 
-  // testlink：http://127.0.0.1:5500/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026
+  // testlink：http://127.0.0.1:5500/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026&address=247新北市蘆洲區長榮路3號
+  // githublink：https://huihongchang.github.io/getmap/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026&address=247新北市蘆洲區長榮路3號
 
   const storeData = [
     {
@@ -62,7 +63,7 @@
         }
         else{
           mapinfo.textContent = "請求失敗，請重新使用QRCODE進入!!!";
-          MixPageLink()
+          MixPageLink();
         }
       }   
       
@@ -121,6 +122,6 @@
     console.log(linkData);
     page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
     console.log(page.link);  
-    window.location.assign(page.link);
+    // window.location.assign(page.link);
   }
 
