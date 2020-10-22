@@ -1,5 +1,5 @@
 
-  // testlink：http://127.0.0.1:5500/?id=Ut7RX43mWEvKqsshW6ctYCbZieDwxAj1n4VL+lNkniY=&store=A02L
+  // testlink：http://127.0.0.1:5500/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026
 
   const storeData = [
     {
@@ -25,28 +25,15 @@
     distance: "",
     id: "",
     memberid: "",
-    store: ""
-  };
-
-  let localUrlData = {
-    id: "",
     store: "",
-    memberid: ""
+    address: ""
   };
 
-  var formdata = new FormData();
+  let storeAddress = "247新北市蘆洲區長榮路3號";
+  let mapAPIKey = "AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8";
 
-var requestOptions = {
-  method: 'GET',
-  body: formdata,
-  redirect: 'follow'
-};
-
-fetch("https://maps.googleapis.com/maps/api/geocode/json?address=247新北市蘆洲區長榮路3號&key=AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8&callback=initMap", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
+  var xhr = new XMLHttpRequest();
+  // xhr.withCredentials = false;
   
   // 正式 url
   let page = {
@@ -59,21 +46,24 @@ fetch("https://maps.googleapis.com/maps/api/geocode/json?address=247新北市蘆
     linkData[pair[0]] = pair[1];
   }
 
-  
-  getLocation();
-  // GetStoreLocation(GetStoreId(GetPageLink()));
-  // GetMemberId(GetPageLink());
-
-  GetStorePos(linkData.store);
+  GetStorePos();   
  
   //取的店座標
-  function GetStorePos(storeId){
-    for(let i = 0; i < storeData.length; i++){
-      if(storeData[i]["id"] === storeId){
-        linkData.latB = storeData[i]["location"].lat;
-        linkData.lonB = storeData[i]["location"].lon;        
-      }       
-    }  
+  function GetStorePos(){
+    xhr.addEventListener("readystatechange", function() {
+      if(this.readyState === 4) {
+        let mapData = JSON.parse(this.responseText);
+        console.log(mapData);
+        console.log(mapData["results"][0].geometry.location.lat);
+        linkData.latB = mapData["results"][0].geometry.location.lat;
+        linkData.lonB = mapData["results"][0].geometry.location.lng;
+        getLocation();
+      }   
+    });
+    
+    xhr.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=${storeAddress}&key=${mapAPIKey}`);
+    
+    xhr.send();
   }
   
   const mapinfo = document.querySelector('.map-info');
