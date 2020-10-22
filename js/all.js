@@ -116,6 +116,6 @@
     console.log(linkData);
     page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
     console.log(page.link);  
-    // window.location.assign(page.link);
+    window.location.assign(page.link);
   }
 
