@@ -30,7 +30,8 @@
     address: ""
   };
 
-  let storeAddress = "247新北市蘆洲區長榮路3號";
+  // test address
+  // let storeAddress = "247新北市蘆洲區長榮路3號";
   let mapAPIKey = "AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8";
   const mapinfo = document.querySelector('.map-info');
   
@@ -69,7 +70,7 @@
       
     });
     
-    xhr.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=${storeAddress}&key=${mapAPIKey}`);
+    xhr.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=${linkData.address}&key=${mapAPIKey}`);
     
     xhr.send();
   }
