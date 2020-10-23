@@ -1,22 +1,3 @@
-
-  // testlink：http://127.0.0.1:5500/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026&address=247新北市蘆洲區長榮路3號
-  // githublink：https://huihongchang.github.io/getmap/?id=hqJ/x4xjzfLyWueY5ZS/Xn1UokoHLJc69o4Qny9Umac=&store=A02L&memberid=140026&address=247新北市蘆洲區長榮路3號
-
-  const storeData = [
-    {
-      id:"A02L",
-      location: {lat : "25.042574", lon: "121.550855"}
-    },
-    {
-      id:"A03B",
-      location: {lat : "23.042574", lon: "123.550855"}
-    },
-    {
-      id:"A03K",
-      location: {lat : "24.042574", lon: "122.550855"}
-    }
-  ];
-
   let linkData = {
 
     latA: "",
@@ -30,8 +11,6 @@
     address: ""
   };
 
-  // test address
-  // let storeAddress = "247新北市蘆洲區長榮路3號";
   let mapAPIKey = "AIzaSyDoNDfv-qB-_Cy2EYcTEoGgkoCBpHZD0X8";
   const mapinfo = document.querySelector('.map-info');
   
@@ -56,8 +35,8 @@
       if(this.readyState === 4) {
         if(this.status === 200){
           let mapData = JSON.parse(this.responseText);
-          console.log(mapData);
-          console.log(mapData["results"][0].geometry.location.lat);
+          // console.log(mapData);
+          // console.log(mapData["results"][0].geometry.location.lat);
           linkData.latB = mapData["results"][0].geometry.location.lat;
           linkData.lonB = mapData["results"][0].geometry.location.lng;
           getLocation();
@@ -89,7 +68,7 @@
     linkData.lonA = position.coords.longitude;
     mapinfo.textContent = `資訊取得成功`;
     distance(linkData.latA, linkData.lonA, linkData.latB, linkData.lonB, "K");
-    console.log(linkData);
+    // console.log(linkData);
   }
 
   /*計算兩個座標的距離*/
@@ -118,9 +97,9 @@
   }
   
   function MixPageLink(){
-    console.log(linkData);
+    // console.log(linkData);
     page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
-    console.log(page.link);  
+    // console.log(page.link);  
     window.location.assign(page.link);
   }
 
