@@ -73,9 +73,7 @@
     xhr.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=${linkData.address}&key=${mapAPIKey}`);
     
     xhr.send();
-  }
-
-  // $('#btn-getlocation').click(getLocation);  
+  }  
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -123,6 +121,6 @@
     console.log(linkData);
     page.link = `${page.link}?sId=${linkData.memberid}&sCheckInLongitude=${linkData.lonA}&sCheckInLatitude=${linkData.latA}&sDistance=${linkData.distance}&sEncryptString=${linkData.id}`;
     console.log(page.link);  
-    // window.location.assign(page.link);
+    window.location.assign(page.link);
   }
 
